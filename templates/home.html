@@ -1,7 +1,17 @@
-{% extends "layout.html" %}
-
-{% block body %}
+{% extends "layout.html" %} {% block body %}
 <div class="jumbotron text-center">
     <h1>Welcome to Image Processing Application!</h1>
+    <img src="{{ url_for('static', filename='img/image_here.jpg') }}" alt="image here">
+    <form action="http://localhost:5000/preview" method="post">
+        <div class="input-group">
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="inputGroupFile04">
+                <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+            </div>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-secondary">Preview</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
