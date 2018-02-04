@@ -22,6 +22,8 @@ def upload():
     for file in request.files.getlist("file"):
         print(file)
         filename = file.filename
+        if filename == "":
+            return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
         destination = "/".join([target, filename])
         print(destination)
         file.save(destination)
