@@ -6,9 +6,15 @@ app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
+@app.route("/index")
 @app.route("/")
 def index():
     return render_template("home.html", file_path="img/image_here_123123123.jpg")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 @app.route("/upload", methods=["POST"])
@@ -21,14 +27,17 @@ def upload():
 
     for file in request.files.getlist("file"):
         print(file)
-        filename = file.filename
+        filename = "temp_img." + file.filename.split(".")[-1]
         if filename == "":
             return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
+        # elif filename.split(".")[-1] != :
+        #     return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
+
         destination = "/".join([target, filename])
         print(destination)
         file.save(destination)
 
-    return render_template("home.html", file_path="img/"+filename)
+    return render_template("home.html", file_path="img/" + filename)
 
 
 if __name__ == '__main__':
