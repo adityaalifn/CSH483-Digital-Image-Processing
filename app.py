@@ -27,12 +27,11 @@ def upload():
 
     for file in request.files.getlist("file"):
         print(file)
-        filename = "temp_img." + file.filename.split(".")[-1]
-        if filename == "":
+        if file.filename == "":
+            print("A")
             return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
-        # elif filename.split(".")[-1] != :
-        #     return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
 
+        filename = "temp_img." + file.filename.split(".")[-1]
         destination = "/".join([target, filename])
         print(destination)
         file.save(destination)
