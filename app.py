@@ -9,7 +9,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 @app.route("/index")
 @app.route("/")
 def index():
-    return render_template("home.html", file_path="img/image_here_123123123.jpg")
+    return render_template("home.html", file_path="img/image_here.jpg")
 
 
 @app.route("/about")
@@ -28,15 +28,14 @@ def upload():
     for file in request.files.getlist("file"):
         print(file)
         if file.filename == "":
-            print("A")
-            return render_template("home.html", file_path="img/no-image-selected-123123123.gif")
+            return render_template("home.html", file_path="img/no_image_selected.gif")
 
         filename = "temp_img." + file.filename.split(".")[-1]
         destination = "/".join([target, filename])
         print(destination)
         file.save(destination)
 
-    return render_template("home.html", file_path="img/" + filename)
+        return render_template("home.html", file_path="img/" + filename)
 
 
 if __name__ == '__main__':
