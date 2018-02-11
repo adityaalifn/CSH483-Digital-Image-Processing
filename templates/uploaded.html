@@ -1,0 +1,19 @@
+{% extends "layout.html" %} {% block body %}
+<div class="jumbotron text-center">
+    <h1>Welcome to Image Processing Application!</h1>
+    <img src="{{ url_for('static', filename=file_path) }}" alt="image here">
+
+    <form id="" action="{{ url_for('grayscale') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-success">Normal</button>
+    </form>
+
+    <form id="" action="{{ url_for('grayscale') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Grayscale</button>
+    </form>
+
+    <button type="button" class="btn btn-warning">Inverse</button>
+    <button type="button" class="btn btn-warning">Zoom In</button>
+    <button type="button" class="btn btn-warning">Zoom Out</button>
+
+</div>
+{% endblock %}

@@ -1,3 +1,5 @@
+import numpy as np
+from PIL import Image
 import os
 from flask import Flask, render_template, request
 
@@ -35,8 +37,14 @@ def upload():
         print(destination)
         file.save(destination)
 
-        return render_template("home.html", file_path="img/" + filename)
+        return render_template("uploaded.html", file_path="img/" + filename)
 
+@app.route("/grayscale", methods=["POST"])
+def grayscale(parameter_list):
+    img = Image.open("static/img/temp_img.PNG")
+    img = img.convert("L")
+    img = np.asarray(img)
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

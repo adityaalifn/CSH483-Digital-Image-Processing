@@ -7,5 +7,14 @@
         <input name="file" type="file" id="inputGroupFile04" accept="image/*">
         <button type="submit" class="btn btn-success">Preview</button>
     </form>
+
+    <form id="" action="{{ url_for('grayscale') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Grayscale</button>
+    </form>
+
+    <button type="button" class="btn btn-warning">Inverse</button>
+    <button type="button" class="btn btn-warning">Zoom In</button>
+    <button type="button" class="btn btn-warning">Zoom Out</button>
+
 </div>
 {% endblock %}
