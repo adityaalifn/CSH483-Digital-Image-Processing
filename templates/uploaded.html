@@ -11,7 +11,9 @@
         <button type="submit" class="btn btn-warning">Grayscale</button>
     </form>
 
-    <button type="button" class="btn btn-warning">Inverse</button>
+    <form id="" action="{{ url_for('inverse') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Inverse</button>
+    </form>
     <button type="button" class="btn btn-warning">Zoom In</button>
     <button type="button" class="btn btn-warning">Zoom Out</button>
 
