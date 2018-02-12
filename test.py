@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 
 img = Image.open("static/img/temp_img.png")
+img = img.convert("RGB")
 
 img_arr = np.asarray(img)
 r = img_arr[:,:,0]
@@ -20,5 +21,7 @@ elif sum_g > sum_r and sum_g > sum_b:
 else:
     arr_gray = (0.25 * r) + (0.25 * g) + (0.5 * b)
 
-img = Image.fromarray(arr_gray)
-img.show()
+img_new = Image.fromarray(arr_gray)
+img_new = img_new.convert("RGB")
+img_new.save("Gray.jpeg")
+img_new.show()
