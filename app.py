@@ -36,7 +36,7 @@ def upload():
         filename = "temp_img.jpeg"
         destination = "/".join([target, filename])
         print(destination)
-        file.save(destination)
+        file.save("static/img/temp_img.jpeg")
 
         return render_template("uploaded.html", file_path="img/temp_img.jpeg")
 
@@ -73,6 +73,7 @@ def grayscale():
     img_new.save("static/img/temp_img_grayscale.jpeg")
     return render_template("uploaded.html", file_path="img/temp_img_grayscale.jpeg")
 
+
 @app.route("/inverse", methods=["POST"])
 def inverse():
     img = Image.open("static/img/temp_img.jpeg")
@@ -90,5 +91,6 @@ def inverse():
     print("A")
     return render_template("uploaded.html", file_path="img/temp_img_inverse.jpeg")
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
