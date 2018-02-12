@@ -2,6 +2,7 @@ import numpy as np
 from PIL import Image
 import os
 from flask import Flask, render_template, request
+import cv2
 
 app = Flask(__name__)
 
@@ -40,11 +41,30 @@ def upload():
         return render_template("uploaded.html", file_path="img/" + filename)
 
 @app.route("/grayscale", methods=["POST"])
-def grayscale(parameter_list):
-    img = Image.open("static/img/temp_img.PNG")
-    img = img.convert("L")
-    img = np.asarray(img)
-    
+def grayscale():
+    img = Image.open("static/img/temp_img.png")
+
+    img_arr = np.asarray(img)
+    r = img_arr[:,:,0]
+    g = img_arr[:,:,1]
+    b = img_arr[:,:,2]
+
+    sum_r = np.sum(r)
+    sum_g = np.sum(g)
+    sum_b = np.sum(b)
+    # print(r, r*0.5)
+
+    if sum_r > sum_g and sum_r > sum_b:
+        arr_gray = (0.5 * r) + (0.25 * g) + (0.25 * b)
+    elif sum_g > sum_r and sum_g > sum_b:
+        arr_gray = (0.25 * r) + (0.5 * g) + (0.25 * b)
+    else:
+        arr_gray = (0.25 * r) + (0.25 * g) + (0.5 * b)
+
+    img = Image.fromarray(arr_gray)
+    img.show()
+    return render_template("uploaded.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
