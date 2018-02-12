@@ -1,12 +1,26 @@
 import numpy as np
 from PIL import Image
 import os
-from flask import Flask, render_template, request
-import random
+from flask import Flask, render_template, request, make_response
+from datetime import datetime
+from functools import wraps, update_wrapper
 
 app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+def nocache(view):
+    @wraps(view)
+    def no_cache(*args, **kwargs):
+        response = make_response(view(*args, **kwargs))
+        response.headers['Last-Modified'] = datetime.now()
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '-1'
+        return response
+        
+    return update_wrapper(no_cache, view)
+
 
 @app.route("/index")
 @app.route("/")
@@ -32,6 +46,7 @@ def about():
 
 
 @app.route("/upload", methods=["POST"])
+@nocache
 def upload():
     target = os.path.join(APP_ROOT, "static/img")
     print(target)
@@ -54,11 +69,13 @@ def upload():
 
 
 @app.route("/normal", methods=["POST"])
+@nocache
 def normal():
     return render_template("uploaded.html", file_path="img/temp_img.jpeg")
 
 
 @app.route("/grayscale", methods=["POST"])
+@nocache
 def grayscale():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
@@ -87,6 +104,7 @@ def grayscale():
 
 
 @app.route("/inverse", methods=["POST"])
+@nocache
 def inverse():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
@@ -105,4 +123,4 @@ def inverse():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
