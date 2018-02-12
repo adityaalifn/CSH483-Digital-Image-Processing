@@ -30,7 +30,7 @@ def upload():
     for file in request.files.getlist("file"):
         print(file)
         if file.filename == "":
-            return render_template("home.html", file_path="img/no_image_selected.gif")
+            return render_template("no_img.html", file_path="img/no_image_selected.gif")
 
         # filename = "temp_img." + file.filename.split(".")[-1]
         filename = "temp_img.jpeg"
