@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block body %}
 <div class="jumbotron text-center">
     <h1>Welcome to Image Processing Application!</h1>
-    <img src="{{ url_for('static', filename='img/no_image_selected.gif') }}" alt="image here">
+    <img src="{{ url_for('static', filename=file_path) }}" alt="image here">
     <form id="" action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
         Select a file:
         <input name="file" type="file" id="inputGroupFile04" accept="image/*">
