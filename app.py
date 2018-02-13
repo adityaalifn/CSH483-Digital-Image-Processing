@@ -121,6 +121,29 @@ def inverse():
     print("A")
     return render_template("uploaded.html", file_path="img/temp_img_inverse.jpeg")
 
+@app.route("/zoomIn", methods=["POST"])
+@nocache
+def zoomIn():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    
+    img_arr = np.asarray(img)
+    img_arr.setflags(write=1)
+    
+    middle_x = img_arr.shape[0]
+    middle_y = img_arr.shape[1]
+    
+    middle_x_start = middle_x*1//4
+    middle_x_end = middle_x*3//4
+    
+    middle_y_start = middle_y*1//4
+    middle_y_end = middle_y*3//4
+    
+    img_arr = img_arr[middle_x_start:middle_x_end, middle_y_start:middle_y_end, :]
+    img_new = Image.fromarray(img_arr)
+    img_new.save("static/img/temp_img_zoomin.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_zoomin.jpeg")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
