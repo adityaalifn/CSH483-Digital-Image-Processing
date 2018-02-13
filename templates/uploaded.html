@@ -15,11 +15,12 @@
         <button type="submit" class="btn btn-warning">Inverse</button>
     </form>
 
-    <form id="" action="{{ url_for('zoomIn') }}" method="POST" enctype="multipart/form-data">
-        <button type="button" class="btn btn-warning">Zoom In</button>
+    <form id="" action="{{ url_for('zoomin') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Zoom In</button>
     </form>
-    
-    <button type="button" class="btn btn-warning">Zoom Out</button>
 
+    <form id="" action="{{ url_for('zoomout') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Zoom Out</button>
+    </form>
 </div>
 {% endblock %}

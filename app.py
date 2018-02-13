@@ -9,6 +9,7 @@ app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+
 def nocache(view):
     @wraps(view)
     def no_cache(*args, **kwargs):
@@ -18,14 +19,16 @@ def nocache(view):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = '-1'
         return response
-        
+
     return update_wrapper(no_cache, view)
 
 
 @app.route("/index")
 @app.route("/")
+@nocache
 def index():
     return render_template("home.html", file_path="img/image_here.jpg")
+
 
 @app.after_request
 def add_header(r):
@@ -41,6 +44,7 @@ def add_header(r):
 
 
 @app.route("/about")
+@nocache
 def about():
     return render_template("about.html")
 
@@ -118,32 +122,37 @@ def inverse():
     img_new = Image.fromarray(img_arr)
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_inverse.jpeg")
-    print("A")
     return render_template("uploaded.html", file_path="img/temp_img_inverse.jpeg")
 
-@app.route("/zoomIn", methods=["POST"])
+
+@app.route("/zoomin", methods=["POST"])
 @nocache
-def zoomIn():
+def zoomin():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
-    
+
     img_arr = np.asarray(img)
     img_arr.setflags(write=1)
-    
+
     middle_x = img_arr.shape[0]
     middle_y = img_arr.shape[1]
-    
-    middle_x_start = middle_x*1//4
-    middle_x_end = middle_x*3//4
-    
-    middle_y_start = middle_y*1//4
-    middle_y_end = middle_y*3//4
-    
+
+    middle_x_start = middle_x * 1 // 4
+    middle_x_end = middle_x * 3 // 4
+
+    middle_y_start = middle_y * 1 // 4
+    middle_y_end = middle_y * 3 // 4
+
     img_arr = img_arr[middle_x_start:middle_x_end, middle_y_start:middle_y_end, :]
     img_new = Image.fromarray(img_arr)
+    img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_zoomin.jpeg")
     return render_template("uploaded.html", file_path="img/temp_img_zoomin.jpeg")
 
+@app.route("/zoomout", methods=["POST"])
+@nocache
+def zoomout():
+    return render_template("uploaded.html", file_path="img/temp_img.jpeg")
 
 if __name__ == '__main__':
     app.run(debug=True)
