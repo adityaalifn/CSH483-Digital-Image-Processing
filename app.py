@@ -92,14 +92,18 @@ def grayscale():
     sum_r = np.sum(r)
     sum_g = np.sum(g)
     sum_b = np.sum(b)
+    sum_all = sum_r + sum_g + sum_b
     # print(r, r*0.5)
 
-    if sum_r > sum_g and sum_r > sum_b:
-        arr_gray = (0.5 * r) + (0.25 * g) + (0.25 * b)
-    elif sum_g > sum_r and sum_g > sum_b:
-        arr_gray = (0.25 * r) + (0.5 * g) + (0.25 * b)
-    else:
-        arr_gray = (0.25 * r) + (0.25 * g) + (0.5 * b)
+    arr_gray = (sum_r / sum_all * r) + \
+        (sum_g / sum_all * g) + (sum_b / sum_all * b)
+
+    # if sum_r > sum_g and sum_r > sum_b:
+    #     arr_gray = (0.5 * r) + (0.25 * g) + (0.25 * b)
+    # elif sum_g > sum_r and sum_g > sum_b:
+    #     arr_gray = (0.25 * r) + (0.5 * g) + (0.25 * b)
+    # else:
+    #     arr_gray = (0.25 * r) + (0.25 * g) + (0.5 * b)
 
     img_new = Image.fromarray(arr_gray)
     img_new = img_new.convert("RGB")
@@ -178,8 +182,8 @@ def zoomin():
                     img_arr[row, col + 1, 2]) + int(img_arr[row + 1, col + 1, 2])) // 4
             except:
                 break
-            col += 2
-        row += 2
+            col += 1
+        row += 1
 
     new_arr = np.uint8(new_arr)
     img_new = Image.fromarray(new_arr)
@@ -213,8 +217,8 @@ def zoomout():
                                                                     1, 1], new_arr[row + 1, col + 1, 1] = pix_2, pix_2, pix_2, pix_2
             new_arr[row, col, 2], new_arr[row + 1, col, 2], new_arr[row, col +
                                                                     1, 2], new_arr[row + 1, col + 1, 2] = pix_3, pix_3, pix_3, pix_3
-            col += 2
-        row += 2
+            col += 1
+        row += 1
 
     # print(new_arr)
     new_arr = np.uint8(new_arr)
