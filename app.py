@@ -261,5 +261,37 @@ def zoominWithoutRender():
     img_new.save("static/img/temp_img_zoomin.jpeg")
 
 
+@app.route("/fliphorizontal", methods=["POST"])
+@nocache
+def fliphorizontal():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+
+    img_arr = np.asarray(img)
+
+    flipped_arr = np.fliplr(img_arr)
+
+    img_new = Image.fromarray(flipped_arr)
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_fliphorizontal.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_fliphorizontal.jpeg")
+
+
+@app.route("/flipvertical", methods=["POST"])
+@nocache
+def flipvertical():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+
+    img_arr = np.asarray(img)
+
+    flipped_arr = np.flipud(img_arr)
+
+    img_new = Image.fromarray(flipped_arr)
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_flipvertical.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_flipvertical.jpeg")
+
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -26,5 +26,13 @@
     <form id="" action="{{ url_for('crop') }}" method="POST" enctype="multipart/form-data">
         <button type="submit" class="btn btn-warning">Crop</button>
     </form>
+
+    <form id="" action="{{ url_for('fliphorizontal') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Horizontal Flip</button>
+    </form>
+
+    <form id="" action="{{ url_for('flipvertical') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Vertical Flip</button>
+    </form>
 </div>
 {% endblock %}
