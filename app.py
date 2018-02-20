@@ -293,5 +293,35 @@ def flipvertical():
     return render_template("uploaded.html", file_path="img/temp_img_flipvertical.jpeg")
 
 
+@app.route("/brightnesswithincrease", methods=["POST"])
+@nocache
+def brightnesswithincrease():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+
+    img_arr = np.asarray(img)
+
+    new_arr = np.where((255 - img_arr) < 100, 255, img_arr + 100)
+
+    img_new = Image.fromarray(new_arr)
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_brightnesswithincrease.jpeg")
+    return render_template("uploaded.html", file_path="img/brightnesswithincrease.jpeg")
+
+@app.route("/brightnesswithmultiply", methods=["POST"])
+@nocache
+def brightnesswithmultiply():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+
+    img_arr = np.asarray(img)
+
+    new_arr = np.where((255 - img_arr) < 100, 255, img_arr + 100)
+
+    img_new = Image.fromarray(new_arr)
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_brightnesswithmultiply.jpeg")
+    return render_template("uploaded.html", file_path="img/brightnesswithmultiply.jpeg")
+
 if __name__ == '__main__':
     app.run(debug=True)
