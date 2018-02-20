@@ -80,17 +80,32 @@
 
 
 # Brightness by add 100
+# import numpy as np
+# from PIL import Image
+
+# img = Image.open("static/img/temp_img.jpeg")
+# img = img.convert("RGB")
+
+# img_arr = np.asarray(img)
+# new_arr = img_arr * 2
+
+# new_new_arr = np.where(((img_arr*2)-new_arr) > 255,255,None)
+
+# img_new = Image.fromarray(new_arr)
+# img_new = img_new.convert("RGB")
+# img_new.show()
+
+# Penggelapan
 import numpy as np
 from PIL import Image
 
 img = Image.open("static/img/temp_img.jpeg")
 img = img.convert("RGB")
+img_arr = np.asfarray(img)
 
-img_arr = np.asarray(img)
-new_arr = img_arr * 2
+new_arr = img_arr - 100
+new_arr = np.clip(new_arr, 0, 255)
 
-new_new_arr = np.where(((img_arr*2)-new_arr) > 255,255,None)
-
-img_new = Image.fromarray(new_arr)
+img_new = Image.fromarray(new_arr.astype('uint8'))
 img_new = img_new.convert("RGB")
 img_new.show()

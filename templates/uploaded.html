@@ -1,6 +1,7 @@
 {% extends "layout.html" %} {% block body %}
 <div class="jumbotron text-center">
     <h1>Welcome to Image Processing Application!</h1>
+    <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" alt="image here">
     <img src="{{ url_for('static', filename=file_path) }}" alt="image here">
 
     <form id="" action="{{ url_for('normal') }}" method="POST" enctype="multipart/form-data">
@@ -36,11 +37,19 @@
     </form>
 
     <form id="" action="{{ url_for('brightnesswithincrease') }}" method="POST" enctype="multipart/form-data">
-        <button type="submit" class="btn btn-warning">Vertical Flip</button>
+        <button type="submit" class="btn btn-warning">Brightness with Increase</button>
     </form>
     
     <form id="" action="{{ url_for('brightnesswithmultiply') }}" method="POST" enctype="multipart/form-data">
-        <button type="submit" class="btn btn-warning">Vertical Flip</button>
+        <button type="submit" class="btn btn-warning">Brightness with Multiply</button>
+    </form>
+
+    <form id="" action="{{ url_for('darkeningwitdecrease') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Darkening with Decrease</button>
+    </form>
+
+    <form id="" action="{{ url_for('darkeningwitdivide') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Darkening with Divide</button>
     </form>
 </div>
 {% endblock %}

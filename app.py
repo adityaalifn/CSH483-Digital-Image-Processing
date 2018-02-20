@@ -306,7 +306,8 @@ def brightnesswithincrease():
     img_new = Image.fromarray(new_arr)
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_brightnesswithincrease.jpeg")
-    return render_template("uploaded.html", file_path="img/brightnesswithincrease.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_brightnesswithincrease.jpeg")
+
 
 @app.route("/brightnesswithmultiply", methods=["POST"])
 @nocache
@@ -314,14 +315,48 @@ def brightnesswithmultiply():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
 
-    img_arr = np.asarray(img)
+    img_arr = np.asfarray(img)
 
-    new_arr = np.where((255 - img_arr) < 100, 255, img_arr + 100)
+    new_arr = img_arr * 3
+    new_arr = np.clip(new_arr, 0, 255)
 
-    img_new = Image.fromarray(new_arr)
+    img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_brightnesswithmultiply.jpeg")
-    return render_template("uploaded.html", file_path="img/brightnesswithmultiply.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_brightnesswithmultiply.jpeg")
+
+
+@app.route("/darkeningwitdecrease", methods=["POST"])
+@nocache
+def darkeningwitdecrease():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    new_arr = img_arr - 100
+    new_arr = np.clip(new_arr, 0, 255)
+
+    img_new = Image.fromarray(new_arr.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_darkeningwitdecrease.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_darkeningwitdecrease.jpeg")
+
+
+@app.route("/darkeningwitdivide", methods=["POST"])
+@nocache
+def darkeningwitdivide():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    new_arr = img_arr // 3
+    new_arr = np.clip(new_arr, 0, 255)
+
+    img_new = Image.fromarray(new_arr.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_darkeningwitdivide.jpeg")
+    return render_template("uploaded.html", file_path="img/temp_img_darkeningwitdivide.jpeg")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
