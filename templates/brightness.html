@@ -1,9 +1,14 @@
 {% extends "layout.html" %} {% block body %}
 <div class="jumbotron text-center">
     <h1>Welcome to Image Processing Application!</h1>
-    <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" width="1280px" height="720px" alt="image here">
-    <img src="{{ url_for('static', filename=file_path) }}" width="1280px" height="720px" alt="image here">
-
+    <div>
+        <h3>Before</h3>
+        <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" width="1280px" height="720px" alt="image here">
+    </div>
+    <div>
+        <h3>After</h3>
+        <img src="{{ url_for('static', filename=file_path) }}" width="1280px" height="720px" alt="image here">
+    </div>
     <div>
         <form id="" action="{{ url_for('brightnesswithincrease') }}" method="POST" enctype="multipart/form-data">
             <p>Brightness with Increase</p>
