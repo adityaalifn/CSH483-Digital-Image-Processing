@@ -3,11 +3,11 @@
     <h1>Welcome to Image Processing Application!</h1>
     <div>
         <h3>Before</h3>
-        <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" width="1280px" height="720px" alt="image here">
+        <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" alt="image here">
     </div>
     <div>
         <h3>After</h3>
-        <img src="{{ url_for('static', filename=file_path) }}" width="1280px" height="720px" alt="image here">
+        <img src="{{ url_for('static', filename=file_path) }}"  alt="image here">
     </div>
     <div>
         <form id="" action="{{ url_for('darkeningwithdecrease') }}" method="POST" enctype="multipart/form-data">
