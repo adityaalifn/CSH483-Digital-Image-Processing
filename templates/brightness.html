@@ -1,0 +1,24 @@
+{% extends "layout.html" %} {% block body %}
+<div class="jumbotron text-center">
+    <h1>Welcome to Image Processing Application!</h1>
+    <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" width="1280px" height="720px" alt="image here">
+    <img src="{{ url_for('static', filename=file_path) }}" width="1280px" height="720px" alt="image here">
+
+    <div>
+        <form id="" action="{{ url_for('brightnesswithincrease') }}" method="POST" enctype="multipart/form-data">
+            <p>Brightness with Increase</p>
+            <input placeholder="example: 200" type="number" name="val_increase">
+            <button type="submit" class="btn btn-success">Preview</button>
+        </form>
+
+        <form id="" action="{{ url_for('brightnesswithmultiply') }}" method="POST" enctype="multipart/form-data">
+            <p>Brightness with Multiply</p>
+            <input placeholder="example: 2" type="number" name="val_multiply">
+            <button type="submit" class="btn btn-success">Preview</button>
+        </form>
+    </div>
+    <form id="" action="{{ url_for('normal') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Back</button>
+    </form>
+</div>
+{% endblock %}

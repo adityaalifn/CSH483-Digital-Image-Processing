@@ -30,6 +30,18 @@ def index():
     return render_template("home.html", file_path="img/image_here.jpg")
 
 
+@app.route("/brightness")
+@nocache
+def brightness():
+    return render_template("brightness.html", file_path="img/temp_img.jpeg")
+
+
+@app.route("/darkening")
+@nocache
+def darkening():
+    return render_template("darkening.html", file_path="img/temp_img.jpeg")
+
+
 @app.after_request
 def add_header(r):
     """
@@ -298,15 +310,17 @@ def flipvertical():
 def brightnesswithincrease():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
+    img_arr = np.asfarray(img)
 
-    img_arr = np.asarray(img)
+    val = request.form['val_increase']
 
-    new_arr = np.where((255 - img_arr) < 100, 255, img_arr + 100)
+    new_arr = img_arr + int(val)
+    new_arr = np.clip(new_arr, 0, 255)
 
-    img_new = Image.fromarray(new_arr)
+    img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_brightnesswithincrease.jpeg")
-    return render_template("uploaded.html", file_path="img/temp_img_brightnesswithincrease.jpeg")
+    return render_template("brightness.html", file_path="img/temp_img_brightnesswithincrease.jpeg")
 
 
 @app.route("/brightnesswithmultiply", methods=["POST"])
@@ -316,46 +330,48 @@ def brightnesswithmultiply():
     img = img.convert("RGB")
 
     img_arr = np.asfarray(img)
-
-    new_arr = img_arr * 3
+    val = request.form['val_multiply']
+    new_arr = img_arr * int(val)
     new_arr = np.clip(new_arr, 0, 255)
 
     img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_brightnesswithmultiply.jpeg")
-    return render_template("uploaded.html", file_path="img/temp_img_brightnesswithmultiply.jpeg")
+    return render_template("brightness.html", file_path="img/temp_img_brightnesswithmultiply.jpeg")
 
 
-@app.route("/darkeningwitdecrease", methods=["POST"])
+@app.route("/darkeningwithdecrease", methods=["POST"])
 @nocache
-def darkeningwitdecrease():
+def darkeningwithdecrease():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
     img_arr = np.asfarray(img)
 
-    new_arr = img_arr - 100
+    val = request.form['val_increase']
+    new_arr = img_arr - int(val)
     new_arr = np.clip(new_arr, 0, 255)
 
     img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_darkeningwitdecrease.jpeg")
-    return render_template("uploaded.html", file_path="img/temp_img_darkeningwitdecrease.jpeg")
+    img_new.save("static/img/temp_img_darkeningwithdecrease.jpeg")
+    return render_template("darkening.html", file_path="img/temp_img_darkeningwithdecrease.jpeg")
 
 
-@app.route("/darkeningwitdivide", methods=["POST"])
+@app.route("/darkeningwithdivide", methods=["POST"])
 @nocache
-def darkeningwitdivide():
+def darkeningwithdivide():
     img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGB")
     img_arr = np.asfarray(img)
 
-    new_arr = img_arr // 3
+    val = request.form['val_multiply']
+    new_arr = img_arr // int(val)
     new_arr = np.clip(new_arr, 0, 255)
 
     img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_darkeningwitdivide.jpeg")
-    return render_template("uploaded.html", file_path="img/temp_img_darkeningwitdivide.jpeg")
+    img_new.save("static/img/temp_img_darkeningwithdivide.jpeg")
+    return render_template("darkening.html", file_path="img/temp_img_darkeningwithdivide.jpeg")
 
 
 if __name__ == '__main__':
