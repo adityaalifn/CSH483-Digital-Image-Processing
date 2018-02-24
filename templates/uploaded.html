@@ -52,5 +52,17 @@
     <form id="" action="{{ url_for('histogram') }}" enctype="multipart/form-data">
         <button type="submit" class="btn btn-warning">Histogram</button>
     </form>
+
+    <form id="" action="{{ url_for('rotate90') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Rotate 90</button>
+    </form>
+
+    <form id="" action="{{ url_for('rotate180') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Rotate 180</button>
+    </form>
+
+    <form id="" action="{{ url_for('rotate270') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Rotate 270</button>
+    </form>
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+import image_processing
 import os
 from flask import Flask, render_template, request, make_response
 from datetime import datetime
@@ -425,6 +426,27 @@ def histogram():
     plt.clf()
 
     return render_template("histogram.html")
+
+
+@app.route("/rotate90")
+@nocache
+def rotate90():
+    image_processing.rotation90()
+    return render_template("uploaded.html", file_path="img/temp_img_rotated.jpeg")
+
+
+@app.route("/rotate180")
+@nocache
+def rotate180():
+    image_processing.rotation180()
+    return render_template("uploaded.html", file_path="img/temp_img_rotated.jpeg")
+
+
+@app.route("/rotate270")
+@nocache
+def rotate270():
+    image_processing.rotation270()
+    return render_template("uploaded.html", file_path="img/temp_img_rotated.jpeg")
 
 
 if __name__ == '__main__':
