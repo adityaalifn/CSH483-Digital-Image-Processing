@@ -4,6 +4,7 @@ import os
 from flask import Flask, render_template, request, make_response
 from datetime import datetime
 from functools import wraps, update_wrapper
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -372,6 +373,43 @@ def darkeningwithdivide():
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_darkeningwithdivide.jpeg")
     return render_template("darkening.html", file_path="img/temp_img_darkeningwithdivide.jpeg")
+
+
+@app.route("/histogram")
+@nocache
+def histogram():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asarray(img)
+
+    temp_r = np.zeros(256)
+    temp_g = np.zeros(256)
+    temp_b = np.zeros(256)
+
+    for row in img_arr:
+        for col in row:
+            temp_r[col[0]] = temp_r[col[0]] + 1
+            temp_g[col[1]] = temp_g[col[1]] + 1
+            temp_b[col[2]] = temp_b[col[2]] + 1
+
+    x = [i for i in range(256)]
+    width = 1 / 1.5
+    plt.bar(x, temp_r, width, color="r")
+    plt.title("Red Histogram")
+    plt.savefig("static/img/temp_red_hist.jpeg")
+    plt.clf()
+
+    plt.bar(x, temp_g, width, color="g")
+    plt.title("Green Histogram")
+    plt.savefig("static/img/temp_green_hist.jpeg")
+    plt.clf()
+
+    plt.bar(x, temp_b, width, color="b")
+    plt.title("Blue Histogram")
+    plt.savefig("static/img/temp_blue_hist.jpeg")
+    plt.clf()
+
+    return render_template("histogram.html")
 
 
 if __name__ == '__main__':

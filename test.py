@@ -96,16 +96,52 @@
 # img_new.show()
 
 # Penggelapan
+# import numpy as np
+# from PIL import Image
+
+# img = Image.open("static/img/temp_img.jpeg")
+# img = img.convert("RGB")
+# img_arr = np.asfarray(img)
+
+# new_arr = img_arr - 100
+# new_arr = np.clip(new_arr, 0, 255)
+
+# img_new = Image.fromarray(new_arr.astype('uint8'))
+# img_new = img_new.convert("RGB")
+# img_new.show()
+
+# Histrogram
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 
 img = Image.open("static/img/temp_img.jpeg")
 img = img.convert("RGB")
-img_arr = np.asfarray(img)
+img_arr = np.asarray(img)
 
-new_arr = img_arr - 100
-new_arr = np.clip(new_arr, 0, 255)
+temp_r = np.zeros(256)
+temp_g = np.zeros(256)
+temp_b = np.zeros(256)
 
-img_new = Image.fromarray(new_arr.astype('uint8'))
-img_new = img_new.convert("RGB")
-img_new.show()
+for row in img_arr:
+    for col in row:
+        temp_r[col[0]] = temp_r[col[0]] + 1
+        temp_g[col[1]] = temp_g[col[1]] + 1
+        temp_b[col[2]] = temp_b[col[2]] + 1
+
+x = [i for i in range(256)]
+width = 1/1.5
+plt.bar(x,temp_r,width, color="r")
+plt.title("Red Histogram")
+plt.savefig("static/img/temp_red_hist.jpeg")
+plt.clf()
+
+plt.bar(x,temp_g,width, color="g")
+plt.title("Green Histogram")
+plt.savefig("static/img/temp_green_hist.jpeg")
+plt.clf()
+
+plt.bar(x,temp_b,width, color="b")
+plt.title("Blue Histogram")
+plt.savefig("static/img/temp_blue_hist.jpeg")
+plt.clf()
