@@ -29,7 +29,7 @@ rotated90.setflags(write=1)
 
 for row in range(img_arr.shape[0]):
     for col in range(img_arr.shape[1]):
-        rotated90[col, -1 * (row + 1), :] = img_arr[row,col,:]
+        rotated90[col, -1 * (row + 1), :] = img_arr[row, col, :]
 
 img_new = Image.fromarray(rotated90.astype('uint8'))
 img_new = img_new.convert("RGB")

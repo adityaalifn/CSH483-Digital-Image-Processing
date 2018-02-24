@@ -11,13 +11,13 @@
     </div>
     <div>
         <form id="" action="{{ url_for('darkeningwithdecrease') }}" method="POST" enctype="multipart/form-data">
-            <p>Darkening with Decrease</p>
+            <p>Darkening with Decrease (-)</p>
             <input placeholder="example: 200" type="number" name="val_increase">
             <button type="submit" class="btn btn-success">Preview</button>
         </form>
 
         <form id="" action="{{ url_for('darkeningwithdivide') }}" method="POST" enctype="multipart/form-data">
-            <p>Darkening with Multiply</p>
+            <p>Darkening with Divide (/)</p>
             <input placeholder="example: 2" type="number" name="val_multiply">
             <button type="submit" class="btn btn-success">Preview</button>
         </form>

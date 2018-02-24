@@ -5,9 +5,6 @@ import os
 from flask import Flask, render_template, request, make_response
 from datetime import datetime
 from functools import wraps, update_wrapper
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 
 
 app = Flask(__name__)
@@ -98,333 +95,88 @@ def normal():
 @app.route("/grayscale", methods=["POST"])
 @nocache
 def grayscale():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-    r = img_arr[:, :, 0]
-    g = img_arr[:, :, 1]
-    b = img_arr[:, :, 2]
-
-    sum_r = np.sum(r)
-    sum_g = np.sum(g)
-    sum_b = np.sum(b)
-    sum_all = sum_r + sum_g + sum_b
-    # print(r, r*0.5)
-
-    arr_gray = (sum_r / sum_all * r) + \
-        (sum_g / sum_all * g) + (sum_b / sum_all * b)
-
-    # if sum_r > sum_g and sum_r > sum_b:
-    #     arr_gray = (0.5 * r) + (0.25 * g) + (0.25 * b)
-    # elif sum_g > sum_r and sum_g > sum_b:
-    #     arr_gray = (0.25 * r) + (0.5 * g) + (0.25 * b)
-    # else:
-    #     arr_gray = (0.25 * r) + (0.25 * g) + (0.5 * b)
-
-    img_new = Image.fromarray(arr_gray)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_grayscale.jpeg")
+    image_processing.grayscale()
     return render_template("uploaded.html", file_path="img/temp_img_grayscale.jpeg")
 
 
 @app.route("/inverse", methods=["POST"])
 @nocache
 def inverse():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-    img_arr.setflags(write=1)
-    img_arr[:, :, 0] = 255 - img_arr[:, :, 0]
-    img_arr[:, :, 1] = 255 - img_arr[:, :, 1]
-    img_arr[:, :, 2] = 255 - img_arr[:, :, 2]
-
-    img_new = Image.fromarray(img_arr)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_inverse.jpeg")
+    image_processing.invers()
     return render_template("uploaded.html", file_path="img/temp_img_inverse.jpeg")
 
 
 @app.route("/crop", methods=["POST"])
 @nocache
 def crop():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-    img_arr.setflags(write=1)
-
-    middle_x = img_arr.shape[0]
-    middle_y = img_arr.shape[1]
-
-    middle_x_start = middle_x * 1 // 4
-    middle_x_end = middle_x * 3 // 4
-
-    middle_y_start = middle_y * 1 // 4
-    middle_y_end = middle_y * 3 // 4
-
-    img_arr = img_arr[middle_x_start:middle_x_end,
-                      middle_y_start:middle_y_end, :]
-    img_new = Image.fromarray(img_arr)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_crop.jpeg")
+    image_processing.crop()
     return render_template("uploaded.html", file_path="img/temp_img_crop.jpeg")
 
 
 @app.route("/zoomin", methods=["POST"])
 @nocache
 def zoomin():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-    # img_arr.setflags(write=1)
-    new_size = ((img_arr.shape[0] // 2),
-                (img_arr.shape[1] // 2), img_arr.shape[2])
-    new_arr = np.full(new_size, 255)
-    # print(img_arr.shape, new_size)
-    new_arr.setflags(write=1)
-
-    img_arr_shape = img_arr.shape
-
-    for row in range(img_arr_shape[0]):
-        for col in range(img_arr_shape[1]):
-            try:
-                new_arr[row, col, 0] = (int(img_arr[row, col, 0]) + int(img_arr[row + 1, col, 0]) + int(
-                    img_arr[row, col + 1, 0]) + int(img_arr[row + 1, col + 1, 0])) // 4
-                new_arr[row, col, 1] = (int(img_arr[row, col, 1]) + int(img_arr[row + 1, col, 1]) + int(
-                    img_arr[row, col + 1, 1]) + int(img_arr[row + 1, col + 1, 1])) // 4
-                new_arr[row, col, 2] = (int(img_arr[row, col, 2]) + int(img_arr[row + 1, col, 2]) + int(
-                    img_arr[row, col + 1, 2]) + int(img_arr[row + 1, col + 1, 2])) // 4
-            except:
-                break
-            col += 1
-        row += 1
-
-    new_arr = np.uint8(new_arr)
-    img_new = Image.fromarray(new_arr)
-    img_new.save("static/img/temp_img_zoomin.jpeg")
+    image_processing.zoomin()
     return render_template("uploaded.html", file_path="img/temp_img_zoomin.jpeg")
 
 
 @app.route("/zoomout", methods=["POST"])
 @nocache
 def zoomout():
-    zoominWithoutRender()
-    img = Image.open("static/img/temp_img_zoomin.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-
-    img_arr_shape = img_arr.shape
-    arr_x_size = img_arr.shape[0] * 2
-    arr_y_size = img_arr.shape[1] * 2
-
-    new_arr = np.full((arr_x_size, arr_y_size, 3), 255)
-    new_arr.setflags(write=1)
-
-    for row in range(img_arr_shape[0]):
-        for col in range(img_arr_shape[1]):
-            pix_1, pix_2, pix_3 = img_arr[row, col,
-                                          0], img_arr[row, col, 1], img_arr[row, col, 2]
-            new_arr[row, col, 0], new_arr[row + 1, col, 0], new_arr[row, col +
-                                                                    1, 0], new_arr[row + 1, col + 1, 0] = pix_1, pix_1, pix_1, pix_1
-            new_arr[row, col, 1], new_arr[row + 1, col, 1], new_arr[row, col +
-                                                                    1, 1], new_arr[row + 1, col + 1, 1] = pix_2, pix_2, pix_2, pix_2
-            new_arr[row, col, 2], new_arr[row + 1, col, 2], new_arr[row, col +
-                                                                    1, 2], new_arr[row + 1, col + 1, 2] = pix_3, pix_3, pix_3, pix_3
-            col += 1
-        row += 1
-
-    # print(new_arr)
-    new_arr = np.uint8(new_arr)
-    img_new = Image.fromarray(new_arr)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_zoomout.jpeg")
+    image_processing.zoomout()
     return render_template("uploaded.html", file_path="img/temp_img_zoomout.jpeg")
-
-
-def zoominWithoutRender():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asarray(img)
-    # img_arr.setflags(write=1)
-    new_size = ((img_arr.shape[0] // 2),
-                (img_arr.shape[1] // 2), img_arr.shape[2])
-    new_arr = np.full(new_size, 255)
-    print(img_arr.shape, new_size)
-    new_arr.setflags(write=1)
-
-    img_arr_shape = img_arr.shape
-
-    for row in range(img_arr_shape[0]):
-        for col in range(img_arr_shape[1]):
-            try:
-                new_arr[row, col, 0] = (int(img_arr[row, col, 0]) + int(img_arr[row + 1, col, 0]) + int(
-                    img_arr[row, col + 1, 0]) + int(img_arr[row + 1, col + 1, 0])) // 4
-                new_arr[row, col, 1] = (int(img_arr[row, col, 1]) + int(img_arr[row + 1, col, 1]) + int(
-                    img_arr[row, col + 1, 1]) + int(img_arr[row + 1, col + 1, 1])) // 4
-                new_arr[row, col, 2] = (int(img_arr[row, col, 2]) + int(img_arr[row + 1, col, 2]) + int(
-                    img_arr[row, col + 1, 2]) + int(img_arr[row + 1, col + 1, 2])) // 4
-            except:
-                break
-            col += 1
-        row += 1
-
-    new_arr = np.uint8(new_arr)
-    img_new = Image.fromarray(new_arr)
-    img_new.save("static/img/temp_img_zoomin.jpeg")
 
 
 @app.route("/fliphorizontal", methods=["POST"])
 @nocache
 def fliphorizontal():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asarray(img)
-
-    flipped_arr = img_arr.copy()
-    flipped_arr.setflags(write=1)
-
-    for row in range(img_arr.shape[0]):
-        for col in range(img_arr.shape[1]):
-            flipped_arr[-1 * (row + 1), col, 0] = img_arr[row, col, 0]
-            flipped_arr[-1 * (row + 1), col, 1] = img_arr[row, col, 1]
-            flipped_arr[-1 * (row + 1), col, 2] = img_arr[row, col, 2]
-
-    img_new = Image.fromarray(flipped_arr)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_fliphorizontal.jpeg")
+    image_processing.fliphorizontal()
     return render_template("uploaded.html", file_path="img/temp_img_fliphorizontal.jpeg")
 
 
 @app.route("/flipvertical", methods=["POST"])
 @nocache
 def flipvertical():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asarray(img)
-
-    flipped_arr = img_arr.copy()
-    flipped_arr.setflags(write=1)
-
-    for row in range(img_arr.shape[0]):
-        for col in range(img_arr.shape[1]):
-            flipped_arr[row, -1 * (col + 1), 0] = img_arr[row, col, 0]
-            flipped_arr[row, -1 * (col + 1), 1] = img_arr[row, col, 1]
-            flipped_arr[row, -1 * (col + 1), 2] = img_arr[row, col, 2]
-
-    img_new = Image.fromarray(flipped_arr)
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_flipvertical.jpeg")
+    image_processing.flipvertical()
     return render_template("uploaded.html", file_path="img/temp_img_flipvertical.jpeg")
 
 
 @app.route("/brightnesswithincrease", methods=["POST"])
 @nocache
 def brightnesswithincrease():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asfarray(img)
-
     val = request.form['val_increase']
-
-    new_arr = img_arr + int(val)
-    new_arr = np.clip(new_arr, 0, 255)
-
-    img_new = Image.fromarray(new_arr.astype('uint8'))
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_brightnesswithincrease.jpeg")
+    image_processing.brightnesswithincrease(val)
     return render_template("brightness.html", file_path="img/temp_img_brightnesswithincrease.jpeg")
 
 
 @app.route("/brightnesswithmultiply", methods=["POST"])
 @nocache
 def brightnesswithmultiply():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-
-    img_arr = np.asfarray(img)
     val = request.form['val_multiply']
-    new_arr = img_arr * int(val)
-    new_arr = np.clip(new_arr, 0, 255)
-
-    img_new = Image.fromarray(new_arr.astype('uint8'))
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_brightnesswithmultiply.jpeg")
+    image_processing.brightnesswithmultiply(val)
     return render_template("brightness.html", file_path="img/temp_img_brightnesswithmultiply.jpeg")
 
 
 @app.route("/darkeningwithdecrease", methods=["POST"])
 @nocache
 def darkeningwithdecrease():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asfarray(img)
-
     val = request.form['val_increase']
-    new_arr = img_arr - int(val)
-    new_arr = np.clip(new_arr, 0, 255)
-
-    img_new = Image.fromarray(new_arr.astype('uint8'))
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_darkeningwithdecrease.jpeg")
+    image_processing.darkeningwithdecrease(val)
     return render_template("darkening.html", file_path="img/temp_img_darkeningwithdecrease.jpeg")
 
 
 @app.route("/darkeningwithdivide", methods=["POST"])
 @nocache
 def darkeningwithdivide():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asfarray(img)
-
     val = request.form['val_multiply']
-    new_arr = img_arr // int(val)
-    new_arr = np.clip(new_arr, 0, 255)
-
-    img_new = Image.fromarray(new_arr.astype('uint8'))
-    img_new = img_new.convert("RGB")
-    img_new.save("static/img/temp_img_darkeningwithdivide.jpeg")
+    image_processing.darkeningwithdivide(val)
     return render_template("darkening.html", file_path="img/temp_img_darkeningwithdivide.jpeg")
 
 
 @app.route("/histogram")
 @nocache
 def histogram():
-    img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asarray(img)
-
-    temp_r = np.zeros(256)
-    temp_g = np.zeros(256)
-    temp_b = np.zeros(256)
-
-    for row in img_arr:
-        for col in row:
-            temp_r[col[0]] += 1
-            temp_g[col[1]] += 1
-            temp_b[col[2]] += 1
-
-    x = [i for i in range(256)]
-    width = 1 / 1.5
-    plt.bar(x, temp_r, width, color="r")
-    plt.title("Red Histogram")
-    plt.savefig("static/img/temp_red_hist.jpeg")
-    plt.clf()
-
-    plt.bar(x, temp_g, width, color="g")
-    plt.title("Green Histogram")
-    plt.savefig("static/img/temp_green_hist.jpeg")
-    plt.clf()
-
-    plt.bar(x, temp_b, width, color="b")
-    plt.title("Blue Histogram")
-    plt.savefig("static/img/temp_blue_hist.jpeg")
-    plt.clf()
-
+    image_processing.histogram()
     return render_template("histogram.html")
 
 
