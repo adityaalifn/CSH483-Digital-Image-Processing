@@ -388,9 +388,9 @@ def histogram():
 
     for row in img_arr:
         for col in row:
-            temp_r[col[0]] = temp_r[col[0]] + 1
-            temp_g[col[1]] = temp_g[col[1]] + 1
-            temp_b[col[2]] = temp_b[col[2]] + 1
+            temp_r[col[0]] += 1
+            temp_g[col[1]] += 1
+            temp_b[col[2]] += 1
 
     x = [i for i in range(256)]
     width = 1 / 1.5
