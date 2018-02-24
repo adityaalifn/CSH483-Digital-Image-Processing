@@ -1,5 +1,3 @@
-import _tkinter
-import tkinter
 import numpy as np
 from PIL import Image
 import os
@@ -7,9 +5,9 @@ from flask import Flask, render_template, request, make_response
 from datetime import datetime
 from functools import wraps, update_wrapper
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-matplotlib.use('Agg')
 
 app = Flask(__name__)
 
