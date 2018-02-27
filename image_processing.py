@@ -277,16 +277,19 @@ def histogram():
 
     x = [i for i in range(256)]
     width = 1 / 1.5
+    # plt.plot(x, temp_r)
     plt.bar(x, temp_r, width, color="r")
     plt.title("Red Histogram")
     plt.savefig("static/img/temp_red_hist.jpeg")
     plt.clf()
 
+    # plt.plot(x, temp_g)
     plt.bar(x, temp_g, width, color="g")
     plt.title("Green Histogram")
     plt.savefig("static/img/temp_green_hist.jpeg")
     plt.clf()
 
+    # plt.plot(x, temp_b)
     plt.bar(x, temp_b, width, color="b")
     plt.title("Blue Histogram")
     plt.savefig("static/img/temp_blue_hist.jpeg")
