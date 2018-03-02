@@ -172,6 +172,11 @@ def darkeningwithdivide():
     image_processing.darkeningwithdivide(val)
     return render_template("darkening.html", file_path="img/temp_img_darkeningwithdivide.jpeg")
 
+@app.route("/convolution")
+@nocache
+def convolution():
+    return render_template("convolution.html", file_path="img/temp_img.jpeg")
+
 
 @app.route("/histogram")
 @nocache

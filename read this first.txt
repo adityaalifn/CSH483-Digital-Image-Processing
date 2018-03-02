@@ -2,7 +2,8 @@ This application also live at https://pcd-adityaalifn-1301154183.herokuapp.com/
 
 ## Prerequisites
 1. Python 3 or Anaconda with Python 3
-2. Flask 0.12.2 >=
+2 open cmd or terminal and go to this project directory
+3. type "pip3 install -r requirements.txt" on your cmd or terminal
 
 ## Instructions
 1. open cmd or terminal

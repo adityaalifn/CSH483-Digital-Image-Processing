@@ -1,0 +1,35 @@
+{% extends "layout.html" %} {% block body %}
+<div class="jumbotron text-center">
+    <h1>Welcome to Image Processing Application!</h1>
+    <div>
+        <h3>Before</h3>
+        <img src="{{ url_for('static', filename='img/temp_img.jpeg') }}" alt="image here">
+    </div>
+    <div>
+        <h3>After</h3>
+        <img src="{{ url_for('static', filename=file_path) }}" alt="image here">
+    </div>
+    <h4>Your Matrix</h4>
+    <form>
+        <div>
+            <input size="3" type="text" name="mat11">
+            <input size="3" type="text" name="mat12">
+            <input size="3" type="text" name="mat13">
+        </div>
+        <div>
+            <input size="3" type="text" name="mat21">
+            <input size="3" type="text" name="mat22">
+            <input size="3" type="text" name="mat23">
+        </div>
+        <div>
+            <input size="3" type="text" name="mat31">
+            <input size="3" type="text" name="mat32">
+            <input size="3" type="text" name="mat33">
+        </div>
+        <button type="submit" class="btn btn-success">Preview</button>
+    </form>
+    <form id="" action="{{ url_for('normal') }}" method="POST" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Back</button>
+    </form>
+</div>
+{% endblock %}
