@@ -326,5 +326,3 @@ def convolute():
     # [0, 1, 0],
     # [1, -4, 1],
     # [0, 1, 0]), dtype="int")
-
-convolute()
