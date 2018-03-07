@@ -294,3 +294,37 @@ def histogram():
     plt.title("Blue Histogram")
     plt.savefig("static/img/temp_blue_hist.jpeg")
     plt.clf()
+
+
+def convolute():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asarray(img)
+
+    h, w, c = img_arr.shape
+
+    temp = np.zeros_like(img_arr)
+    ker = np.array(([-1, -1, -1],
+                    [-1, 8, -1],
+                    [-1, -1, -1]), dtype="int")
+
+    for i in range(1, h - 1):
+        for j in range(1, w - 1):
+            for k in range(c):
+                temp[i, j, k] = img_arr[i - 1, j - 1, k] * ker[0, 0] + img_arr[i - 1, j, k] * ker[0, 1] + img_arr[i - 1, j + 1, k] * ker[0, 2] + img_arr[i, j - 1, k] * ker[1, 0] + \
+                    img_arr[i, j, k] * ker[1, 1] + img_arr[i, j + 1, k] * ker[1, 2] + img_arr[i + 1, j - 1,
+                                                                                              k] * ker[2, 0] + img_arr[i + 1, j, k] * ker[2, 1] + img_arr[i + 1, j + 1, k] * ker[2, 2]
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.show()
+    # img_arr_shape = img_arr.shape
+    # x_zeros = np.zeros[img_arr_shape[1]]
+    # y_zeros = np.zeros(img_arr_shape[0])
+
+    # img_arr.setflags(write=1)
+    # laplacian = np.array((
+    # [0, 1, 0],
+    # [1, -4, 1],
+    # [0, 1, 0]), dtype="int")
+
+convolute()
