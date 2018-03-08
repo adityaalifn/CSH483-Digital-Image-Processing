@@ -296,17 +296,17 @@ def histogram():
     plt.clf()
 
 
-def convolute():
+def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33):
     img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
-    img_arr = np.asarray(img)
+    img = img.convert("RGBA")
+    img_arr = np.asfarray(img)
 
     h, w, c = img_arr.shape
 
     temp = np.zeros_like(img_arr)
-    ker = np.array(([-1, -1, -1],
-                    [-1, 8, -1],
-                    [-1, -1, -1]), dtype="int")
+    ker = np.array(([mat11, mat12, mat13],
+                    [mat21, mat22, mat23],
+                    [mat31, mat32, mat33]), dtype="int")
 
     for i in range(1, h - 1):
         for j in range(1, w - 1):
@@ -314,15 +314,11 @@ def convolute():
                 temp[i, j, k] = img_arr[i - 1, j - 1, k] * ker[0, 0] + img_arr[i - 1, j, k] * ker[0, 1] + img_arr[i - 1, j + 1, k] * ker[0, 2] + img_arr[i, j - 1, k] * ker[1, 0] + \
                     img_arr[i, j, k] * ker[1, 1] + img_arr[i, j + 1, k] * ker[1, 2] + img_arr[i + 1, j - 1,
                                                                                               k] * ker[2, 0] + img_arr[i + 1, j, k] * ker[2, 1] + img_arr[i + 1, j + 1, k] * ker[2, 2]
-    img_new = Image.fromarray(temp.astype('uint8'))
+
+    new_arr = np.clip(temp, 0, 255)
+    img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.show()
-    # img_arr_shape = img_arr.shape
-    # x_zeros = np.zeros[img_arr_shape[1]]
-    # y_zeros = np.zeros(img_arr_shape[0])
 
-    # img_arr.setflags(write=1)
-    # laplacian = np.array((
-    # [0, 1, 0],
-    # [1, -4, 1],
-    # [0, 1, 0]), dtype="int")
+
+convolute(-1, -1, -1, -1, 8, -1, -1, -1, -1)
