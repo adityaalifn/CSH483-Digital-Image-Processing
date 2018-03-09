@@ -172,6 +172,7 @@ def darkeningwithdivide():
     image_processing.darkeningwithdivide(val)
     return render_template("darkening.html", file_path="img/temp_img_darkeningwithdivide.jpeg")
 
+
 @app.route("/convolution")
 @nocache
 def convolution():
@@ -204,6 +205,13 @@ def rotate180():
 def rotate270():
     image_processing.rotation270()
     return render_template("uploaded.html", file_path="img/temp_img_rotated.jpeg")
+
+
+@app.route("/convoluting",methods=["POST"])
+@nocache
+def convoluting():
+    image_processing.convolute(-1, -1, -1, -1, 8, -1, -1, -1, -1)
+    return render_template("convolution.html", file_path="img/temp_img_convolution.jpeg")
 
 
 if __name__ == '__main__':

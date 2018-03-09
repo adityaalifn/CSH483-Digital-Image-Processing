@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 def grayscale():
     img = Image.open("static/img/temp_img.jpeg")
-    img = img.convert("RGB")
+    img = img.convert("RGBA")
 
     img_arr = np.asarray(img)
     r = img_arr[:, :, 0]
@@ -318,7 +318,4 @@ def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33):
     new_arr = np.clip(temp, 0, 255)
     img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
-    img_new.show()
-
-
-convolute(-1, -1, -1, -1, 8, -1, -1, -1, -1)
+    img_new.save("static/img/temp_img_convolution.jpeg")
