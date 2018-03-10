@@ -65,6 +65,18 @@
         <button type="submit" class="btn btn-warning">Rotate 270</button>
     </form>
 
+    <form id="" action="{{ url_for('blurring') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Blurring</button>
+    </form>
+
+    <form id="" action="{{ url_for('sharpening') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Sharpening</button>
+    </form>
+
+    <form id="" action="{{ url_for('edge_detection') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Edge Detection</button>
+    </form>
+
     <form id="" action="{{ url_for('convolution') }}" enctype="multipart/form-data">
         <button type="submit" class="btn btn-warning">Convolution</button>
     </form>

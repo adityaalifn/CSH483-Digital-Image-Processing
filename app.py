@@ -207,10 +207,48 @@ def rotate270():
     return render_template("uploaded.html", file_path="img/temp_img_rotated.jpeg")
 
 
-@app.route("/convoluting",methods=["POST"])
+@app.route("/blurring")
+@nocache
+def blurring():
+    blur_pix = 1 / 9
+    image_processing.convolute(blur_pix, blur_pix, blur_pix,
+                               blur_pix, blur_pix, blur_pix, blur_pix, blur_pix, blur_pix, "")
+    return render_template("uploaded.html", file_path="img/temp_img_convolution.jpeg")
+
+
+@app.route("/sharpening")
+@nocache
+def sharpening():
+    image_processing.convolute(0, -1, 0, -1, 5, -1, 0, -1, 0, "")
+    return render_template("uploaded.html", file_path="img/temp_img_convolution.jpeg")
+
+
+@app.route("/edge_detection")
+@nocache
+def edge_detection():
+    image_processing.convolute(-1, -1, -1, -1, 8, -1, -1, -1, -1, "edge")
+    return render_template("uploaded.html", file_path="img/temp_img_convolution.jpeg")
+
+
+@app.route("/convoluting", methods=["POST"])
 @nocache
 def convoluting():
-    image_processing.convolute(-1, -1, -1, -1, 8, -1, -1, -1, -1)
+    m11 = request.form['mat11']
+    m12 = request.form['mat12']
+    m13 = request.form['mat13']
+    m21 = request.form['mat21']
+    m22 = request.form['mat22']
+    m23 = request.form['mat23']
+    m31 = request.form['mat31']
+    m32 = request.form['mat32']
+    m33 = request.form['mat33']
+
+    try:
+        image_processing.convolute(
+            m11, m12, m13, m21, m22, m23, m31, m32, m33, "")
+    except:
+        return render_template("convolution.html", file_path="img/temp_img.jpeg", alert="Matrix must filled all by integers")
+
     return render_template("convolution.html", file_path="img/temp_img_convolution.jpeg")
 
 

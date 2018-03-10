@@ -3,6 +3,7 @@ from PIL import Image
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from multiprocessing import process
 
 
 def grayscale():
@@ -296,24 +297,36 @@ def histogram():
     plt.clf()
 
 
-def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33):
-    img = Image.open("static/img/temp_img.jpeg")
+def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33, mode):
+    if mode == "edge":
+        grayscale()
+        img = Image.open("static/img/temp_img_grayscale.jpeg")
+    else:
+        img = Image.open("static/img/temp_img.jpeg")
     img = img.convert("RGBA")
     img_arr = np.asfarray(img)
 
-    h, w, c = img_arr.shape
+    h, w, _ = img_arr.shape
 
     temp = np.zeros_like(img_arr)
-    ker = np.array(([mat11, mat12, mat13],
+    ker = np.array([[mat11, mat12, mat13],
                     [mat21, mat22, mat23],
-                    [mat31, mat32, mat33]), dtype="int")
+                    [mat31, mat32, mat33]])
+
+    # np.place(ker, ker == "", 0)
+    # ker = ker.astype("int")
 
     for i in range(1, h - 1):
         for j in range(1, w - 1):
-            for k in range(c):
-                temp[i, j, k] = img_arr[i - 1, j - 1, k] * ker[0, 0] + img_arr[i - 1, j, k] * ker[0, 1] + img_arr[i - 1, j + 1, k] * ker[0, 2] + img_arr[i, j - 1, k] * ker[1, 0] + \
-                    img_arr[i, j, k] * ker[1, 1] + img_arr[i, j + 1, k] * ker[1, 2] + img_arr[i + 1, j - 1,
-                                                                                              k] * ker[2, 0] + img_arr[i + 1, j, k] * ker[2, 1] + img_arr[i + 1, j + 1, k] * ker[2, 2]
+            temp[i, j, 0] = img_arr[i - 1, j - 1, 0] * ker[0, 0] + img_arr[i - 1, j, 0] * ker[0, 1] + img_arr[i - 1, j + 1, 0] * ker[0, 2] + img_arr[i, j - 1, 0] * ker[1, 0] + \
+                img_arr[i, j, 0] * ker[1, 1] + img_arr[i, j + 1, 0] * ker[1, 2] + img_arr[i + 1, j - 1,
+                                                                                          0] * ker[2, 0] + img_arr[i + 1, j, 0] * ker[2, 1] + img_arr[i + 1, j + 1, 0] * ker[2, 2]
+            temp[i, j, 1] = img_arr[i - 1, j - 1, 1] * ker[0, 0] + img_arr[i - 1, j, 1] * ker[0, 1] + img_arr[i - 1, j + 1, 1] * ker[0, 2] + img_arr[i, j - 1, 1] * ker[1, 0] + \
+                img_arr[i, j, 1] * ker[1, 1] + img_arr[i, j + 1, 1] * ker[1, 2] + img_arr[i + 1, j - 1,
+                                                                                          1] * ker[2, 0] + img_arr[i + 1, j, 1] * ker[2, 1] + img_arr[i + 1, j + 1, 1] * ker[2, 2]
+            temp[i, j, 2] = img_arr[i - 1, j - 1, 2] * ker[0, 0] + img_arr[i - 1, j, 2] * ker[0, 1] + img_arr[i - 1, j + 1, 2] * ker[0, 2] + img_arr[i, j - 1, 2] * ker[1, 0] + \
+                img_arr[i, j, 2] * ker[1, 1] + img_arr[i, j + 1, 2] * ker[1, 2] + img_arr[i + 1, j - 1,
+                                                                                          2] * ker[2, 0] + img_arr[i + 1, j, 2] * ker[2, 1] + img_arr[i + 1, j + 1, 2] * ker[2, 2]
 
     new_arr = np.clip(temp, 0, 255)
     img_new = Image.fromarray(new_arr.astype('uint8'))
