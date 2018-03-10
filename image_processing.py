@@ -314,7 +314,8 @@ def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33, mod
                     [mat31, mat32, mat33]])
 
     # np.place(ker, ker == "", 0)
-    # ker = ker.astype("int")
+    if mode == "ordinary":
+        ker = ker.astype("int")
 
     for i in range(1, h - 1):
         for j in range(1, w - 1):
