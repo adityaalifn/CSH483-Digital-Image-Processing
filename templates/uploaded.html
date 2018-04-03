@@ -80,5 +80,17 @@
     <form id="" action="{{ url_for('convolution') }}" enctype="multipart/form-data">
         <button type="submit" class="btn btn-warning">Convolution</button>
     </form>
+
+    <form id="" action="{{ url_for('median_filter') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Median Filter</button>
+    </form>
+
+    <form id="" action="{{ url_for('mean_filter') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Mean Filter</button>
+    </form>
+
+    <form id="" action="{{ url_for('mode_filter') }}" enctype="multipart/form-data">
+        <button type="submit" class="btn btn-warning">Mode Filter</button>
+    </form>
 </div>
 {% endblock %}

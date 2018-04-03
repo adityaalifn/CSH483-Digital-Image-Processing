@@ -251,5 +251,26 @@ def convoluting():
     return render_template("convolution.html", file_path="img/temp_img_convolution.jpeg")
 
 
+@app.route("/median_filter")
+@nocache
+def median_filter():
+    image_processing.median_filter()
+    return render_template("uploaded.html", file_path="img/temp_img_medianfilter.jpeg")
+
+
+@app.route("/mean_filter")
+@nocache
+def mean_filter():
+    image_processing.mean_filter()
+    return render_template("uploaded.html", file_path="img/temp_img_meanfilter.jpeg")
+
+
+@app.route("/mode_filter")
+@nocache
+def mode_filter():
+    image_processing.mode_filter()
+    return render_template("uploaded.html", file_path="img/temp_img_modefilter.jpeg")
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

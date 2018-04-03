@@ -3,7 +3,7 @@ from PIL import Image
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from multiprocessing import process
+from scipy import stats
 
 
 def grayscale():
@@ -333,3 +333,60 @@ def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33, mod
     img_new = Image.fromarray(new_arr.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_convolution.jpeg")
+
+
+def median_filter():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    h, w, _ = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            arr_value = np.array([img_arr[i-1, j-1, :], img_arr[i-1, j, :], img_arr[i-1, j+1, :], img_arr[
+                i, j-1, :], img_arr[i, j, :], img_arr[i, j+1, :], img_arr[i+1, j-1, :], img_arr[i+1, j, :], img_arr[i+1, j+1, :]])
+            temp[i, j, :] = np.median(arr_value, axis=0)
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_medianfilter.jpeg")
+
+
+def mean_filter():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    h, w, _ = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            arr_value = np.array([img_arr[i-1, j-1, :], img_arr[i-1, j, :], img_arr[i-1, j+1, :], img_arr[
+                i, j-1, :], img_arr[i, j, :], img_arr[i, j+1, :], img_arr[i+1, j-1, :], img_arr[i+1, j, :], img_arr[i+1, j+1, :]])
+            temp[i, j, :] = np.mean(arr_value, axis=0)
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_meanfilter.jpeg")
+
+
+def mode_filter():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    h, w, _ = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            arr_value = np.array([img_arr[i-1, j-1, :], img_arr[i-1, j, :], img_arr[i-1, j+1, :], img_arr[
+                i, j-1, :], img_arr[i, j, :], img_arr[i, j+1, :], img_arr[i+1, j-1, :], img_arr[i+1, j, :], img_arr[i+1, j+1, :]])
+            temp[i, j, :] = stats.mode(arr_value, axis=0)[0]
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_modefilter.jpeg")
