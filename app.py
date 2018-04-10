@@ -6,7 +6,6 @@ from flask import Flask, render_template, request, make_response
 from datetime import datetime
 from functools import wraps, update_wrapper
 
-
 app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
