@@ -271,5 +271,19 @@ def mode_filter():
     return render_template("uploaded.html", file_path="img/temp_img_modefilter.jpeg")
 
 
+@app.route("/seed_region_growth")
+@nocache
+def seed_region_growth():
+    image_processing.seed_region_growth(seed=200)
+    return render_template("uploaded.html", file_path="img/temp_img_seedregiongrowth.jpeg")
+
+
+@app.route("/threshold_segmentation")
+@nocache
+def threshold_segmentation():
+    image_processing.threshold_segmentation()
+    return render_template("uploaded.html", file_path="img/temp_img_threshold_segmentation.jpeg")
+
+
 if __name__ == '__main__':
     app.run()

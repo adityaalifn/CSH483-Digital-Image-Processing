@@ -390,3 +390,77 @@ def mode_filter():
     img_new = Image.fromarray(temp.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_modefilter.jpeg")
+
+
+def seed_region_growth(seed=10):
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    h, w, c = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            for k in range(c):
+                if ((img_arr[i, j, k] - seed <= img_arr[i-1, j-1, k]) and (img_arr[i, j, k] + seed >= img_arr[i-1, j-1, k])):
+                    temp[i-1, j-1, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i-1, j, k]) and (img_arr[i, j, k] + seed >= img_arr[i-1, j, k])):
+                    temp[i-1, j, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i-1, j+1, k]) and (img_arr[i, j, k] + seed >= img_arr[i-1, j+1, k])):
+                    temp[i-1, j+1, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i, j-1, k]) and (img_arr[i, j, k] + seed >= img_arr[i, j-1, k])):
+                    temp[i, j-1, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i, j, k]) and (img_arr[i, j, k] + seed >= img_arr[i, j-1, k])):
+                    temp[i, j, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i, j+1, k]) and (img_arr[i, j, k] + seed >= img_arr[i, j+1, k])):
+                    temp[i, j+1, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i+1, j-1, k]) and (img_arr[i, j, k] + seed >= img_arr[i+1, j-1, k])):
+                    temp[i+1, j-1, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i+1, j, k]) and (img_arr[i, j, k] + seed >= img_arr[i+1, j, k])):
+                    temp[i+1, j, k] = img_arr[i, j, k]
+                if ((img_arr[i, j, k] - seed <= img_arr[i+1, j+1, k]) and (img_arr[i, j, k] + seed >= img_arr[i+1, j+1, k])):
+                    temp[i+1, j+1, k] = img_arr[i, j, k]
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_seedregiongrowth.jpeg")
+
+
+def threshold_segmentation():
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+
+    h, w, _ = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(h):
+        for j in range(w):
+            if img_arr[i, j, 0] >= 200 and img_arr[i, j, 1] >= 200 and img_arr[i, j, 2] >= 200:
+                temp[i, j, :] = 255
+            elif img_arr[i, j, 0] >= 200 and img_arr[i, j, 1] <= 100 and img_arr[i, j, 2] <= 100:
+                temp[i, j, 0] = 255
+            elif img_arr[i, j, 0] <= 100 and img_arr[i, j, 1] >= 200 and img_arr[i, j, 2] <= 100:
+                temp[i, j, 1] = 255
+            elif img_arr[i, j, 0] <= 100 and img_arr[i, j, 1] <= 100 and img_arr[i, j, 2] >= 200:
+                temp[i, j, 2] = 255
+            elif img_arr[i, j, 0] >= 170 and img_arr[i, j, 1] >= 170 and img_arr[i, j, 2] <= 100:
+                temp[i, j, 0] = 255
+                temp[i, j, 1] = 255
+            elif img_arr[i, j, 0] <= 100 and img_arr[i, j, 1] >= 170 and img_arr[i, j, 2] >= 170:
+                temp[i, j, 1] = 255
+                temp[i, j, 2] = 255
+            elif img_arr[i, j, 0] >= 150 and img_arr[i, j, 1] <= 100 and img_arr[i, j, 2] >= 150:
+                temp[i, j, 1] = 255
+                temp[i, j, 2] = 255
+            elif img_arr[i, j, 0] >= 100 and img_arr[i, j, 1] <= 50 and img_arr[i, j, 2] <= 50:
+                temp[i, j, 0] = 128
+            elif img_arr[i, j, 0] <= 50 and img_arr[i, j, 1] >= 100 and img_arr[i, j, 2] <= 50:
+                temp[i, j, 1] = 128
+            elif img_arr[i, j, 0] <= 70 and img_arr[i, j, 1] <= 70 and img_arr[i, j, 2] >= 100:
+                temp[i, j, 2] = 128
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_threshold_segmentation.jpeg")
