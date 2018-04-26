@@ -464,3 +464,45 @@ def threshold_segmentation():
     img_new = Image.fromarray(temp.astype('uint8'))
     img_new = img_new.convert("RGB")
     img_new.save("static/img/temp_img_threshold_segmentation.jpeg")
+
+
+def dilasi():
+    img_arr = binarize_image("static/img/temp_img.jpeg")
+    # img = img.convert('1')  # convert image to black and white
+    # img_arr = np.asarray(img)
+    # img_new = Image.fromarray(img_arr.astype('uint8'))
+    # img_new = img_new.convert("RGB")
+    # img_new.save("static/img/temp_img_dilasi.jpeg")
+    # return
+    h, w = img_arr.shape
+    temp = np.zeros_like(img_arr)
+    ker = np.ones((3, 3))
+    print(img_arr, ker)
+    for i in range(1, h-1):
+        for j in range(1, w-1):
+            if img_arr[i-1, j-1] * ker[0, 0] == 1 or img_arr[i-1, j] * ker[0, 1] == 1 or img_arr[i-1, j+1] * ker[0, 2] == 1 or img_arr[i, j-1] * ker[1, 0] == 1 or img_arr[i, j] * ker[1, 1] == 1 or img_arr[i, j+1] * ker[1, 2] == 1 or img_arr[i+1, j-1] * ker[2, 0] == 1 or img_arr[i+1, j] * ker[2, 1] == 1 or img_arr[i+1, j+1] * ker[2, 2] == 1:
+                temp[i, j] = 1
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    # img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_dilasi.jpeg")
+
+
+def binarize_image(img_path):
+    """Binarize an image."""
+    image_file = Image.open(img_path)
+    image = image_file.convert('L')  # convert image to monochrome
+    image = np.array(image)
+    image = binarize_array(image)
+    return image
+
+
+def binarize_array(numpy_array, threshold=50):
+    """Binarize a numpy array."""
+    for i in range(len(numpy_array)):
+        for j in range(len(numpy_array[0])):
+            if numpy_array[i][j] > threshold:
+                numpy_array[i][j] = 255
+            else:
+                numpy_array[i][j] = 0
+    return numpy_array

@@ -285,5 +285,12 @@ def threshold_segmentation():
     return render_template("uploaded.html", file_path="img/temp_img_threshold_segmentation.jpeg")
 
 
+@app.route("/dilasi")
+@nocache
+def dilasi():
+    image_processing.dilasi()
+    return render_template("uploaded.html", file_path="img/temp_img_dilasi.jpeg")
+
+
 if __name__ == '__main__':
     app.run()
