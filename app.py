@@ -298,6 +298,12 @@ def erosi():
     image_processing.erosi()
     return render_template("uploaded.html", file_path="img/temp_img_erosi.jpeg")
 
+@app.route("/compression")
+@nocache
+def compression():
+    image_processing.image_compression()
+    return render_template("uploaded.html", file_path="img/temp_img_compressed.jpeg")
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

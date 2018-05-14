@@ -19,7 +19,6 @@ def grayscale():
     sum_g = np.sum(g)
     sum_b = np.sum(b)
     sum_all = sum_r + sum_g + sum_b
-    # print(r, r*0.5)
 
     arr_gray = (sum_r / sum_all * r) + \
         (sum_g / sum_all * g) + (sum_b / sum_all * b)
@@ -232,7 +231,6 @@ def darkeningwithdivide(val=0):
 
 
 def rotation90(img_file="static/img/temp_img.jpeg"):
-    # print("RUNNED!!!!")
     img = Image.open(img_file)
     img = img.convert("RGB")
     img_arr = np.asarray(img)
@@ -297,6 +295,13 @@ def histogram():
     plt.clf()
 
 
+def pad3D(c_x, padlen=1):
+    m, n, r = c_x.shape
+    c_y = np.zeros((m, n+2*padlen, r+2*padlen), dtype=c_x.dtype)
+    c_y[:, padlen:-padlen, padlen:-padlen] = c_x
+    return c_y
+
+
 def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33, mode):
     if mode == "edge":
         grayscale()
@@ -316,9 +321,12 @@ def convolute(mat11, mat12, mat13, mat21, mat22, mat23, mat31, mat32, mat33, mod
     # np.place(ker, ker == "", 0)
     if mode == "ordinary":
         ker = ker.astype("int")
+    # img_arr = np.pad(img_arr, ((0,0), (1,1), (1,1)), mode='constant')
+    # img_arr = pad3D(img_arr)
+    print(img_arr)
 
-    for i in range(1, h - 1):
-        for j in range(1, w - 1):
+    for i in range(1, h-1):
+        for j in range(1, w-1):
             temp[i, j, 0] = img_arr[i - 1, j - 1, 0] * ker[0, 0] + img_arr[i - 1, j, 0] * ker[0, 1] + img_arr[i - 1, j + 1, 0] * ker[0, 2] + img_arr[i, j - 1, 0] * ker[1, 0] + \
                 img_arr[i, j, 0] * ker[1, 1] + img_arr[i, j + 1, 0] * ker[1, 2] + img_arr[i + 1, j - 1,
                                                                                           0] * ker[2, 0] + img_arr[i + 1, j, 0] * ker[2, 1] + img_arr[i + 1, j + 1, 0] * ker[2, 2]
@@ -518,3 +526,23 @@ def binarize_array(numpy_array, threshold=50):
             else:
                 numpy_array[i][j] = 0
     return numpy_array
+
+
+def image_compression():
+    print("AAA")
+    img = Image.open("static/img/temp_img.jpeg")
+    img = img.convert("RGB")
+    img_arr = np.asfarray(img)
+    print(img_arr)
+    h, w, _ = img_arr.shape
+    temp = np.zeros_like(img_arr)
+
+    for i in range(h):
+        for j in range(w):
+            temp[i, j, 0] = int(str(int(img_arr[i, j, 0]))[:-1]+"0")
+            temp[i, j, 1] = int(str(int(img_arr[i, j, 1]))[:-1]+"0")
+            temp[i, j, 2] = int(str(int(img_arr[i, j, 2]))[:-1]+"0")
+
+    img_new = Image.fromarray(temp.astype('uint8'))
+    img_new = img_new.convert("RGB")
+    img_new.save("static/img/temp_img_compressed.jpeg")
