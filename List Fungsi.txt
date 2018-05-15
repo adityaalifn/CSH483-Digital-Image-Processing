@@ -1,0 +1,31 @@
+Fungsi yang dikerjakan dan berjalan:
+- open image
+- grayscale
+- invers
+- zoom in
+- zoom out
+- crop
+- flip vertical
+- flip horizontal
+- brightness dengan penambahan
+- brightness dengan perkalian
+- penggelapan dengan pengurangan
+- penggelapan dengan pembagian
+- rotasi 90
+- rotasi 180
+- rotasi 270
+- histogram gambar
+- konvolusi
+- blurring
+- sharpening atau penajaman gambar
+- edge detection
+- median filter
+- mean filter
+- modus filter
+- threshold segmentation
+- dilasi
+- erosi
+- kompresi
+
+Fungsi yang dikerjakan dan tidak berjalan:
+- seed region growth

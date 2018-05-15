@@ -1,3 +1,4 @@
 pcdenv
 .vscode
 __pycache__
+*.mp4
