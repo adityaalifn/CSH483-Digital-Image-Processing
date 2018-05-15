@@ -1,4 +1,7 @@
 # CSH483-Digital-Image-Processing
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0148677d020c4b53a262c62b137f868d)](https://app.codacy.com/app/adityaalifnugraha/CSH483-Digital-Image-Processing?utm_source=github.com&utm_medium=referral&utm_content=adityaalifn/CSH483-Digital-Image-Processing&utm_campaign=badger)
+
 Repository for weekly task of Digital Image Processing course at Telkom University
 
 ## Prerequisites
